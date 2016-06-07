@@ -31,7 +31,6 @@ def logout():
 
 
 @app.route('/', methods=['GET', 'POST'])
-@login_required
 def login():
     if request.method == 'POST':
         if request.form['username'] != app.config['USERNAME'] or request.form['password'] != app.config['PASSWORD']:
@@ -72,7 +71,7 @@ def tasks():
 def new_task():
     g.db = connect_db()
     name = request.form['name']
-    date = request.form['due_data']
+    date = request.form['due_date']
     priority = request.form['priority']
     if not name or not date or not priority:
         flash("All fields are required. Please try again.")
@@ -83,7 +82,7 @@ def new_task():
         ])
         g.db.commit()
         g.db.close()
-        flash('New entry was successfully posted. Thanks.')
+        flash('New entry was successfully posted.')
         return redirect(url_for('tasks'))
 
 
@@ -99,7 +98,7 @@ def complete(task_id):
 
 
 @app.route('/delete/<int:task_id>/')
-@login.required
+@login_required
 def delete_entry(task_id):
     g.db = connect_db()
     g.db.execute('DELETE FROM tasks where task_id='+str(task_id))
