@@ -1,4 +1,5 @@
 import sqlite3
+import datetime
 from functools import wraps
 from flask import Flask, flash, redirect, render_template, request, session, url_for
 from flask_sqlalchemy import SQLAlchemy
@@ -61,7 +62,14 @@ def tasks():
 def new_task():
     form = AddTaskForm(request.form)
     if request.method == 'POST' and form.validate_on_submit():
-        new_tasks = Task(form.name.data, form.due_date.data, form.priority.data, 1)
+        new_tasks = Task(
+            form.name.data,
+            form.due_date.data,
+            form.priority.data,
+            datetime.datetime.utcnow(),
+            1,
+            1
+        )
         db.session.add(new_tasks)
         db.session.commit()
         flash('New entry was successfully posted.')
