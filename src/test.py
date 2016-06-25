@@ -21,10 +21,14 @@ class AllTests(unittest.TestCase):
         db.drop_all()
 
     @staticmethod
-    def test_user_setup():
+    def test_users_can_register():
         new_user = User('andrew', 'andrew@ademoleas.org', 'andrewdemoleas')
         db.session.add(new_user)
         db.session.commit()
+        test = db.session.query(User).all()
+        for t in test:
+            t.name
+        assert t.name == "andrew"
 
 if __name__ == "__main__":
     unittest.main()
