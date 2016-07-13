@@ -26,7 +26,7 @@ class AllTests(unittest.TestCase):
         ), follow_redirects=True)
 
     def register(self, name, email, password, confirm):
-        return self.app.post('/register/', data=dict(
+        return self.app.post('register/', data=dict(
             name=name, email=email, password=password, confirm=confirm
         ), follow_redirects=True)
 
@@ -52,7 +52,21 @@ class AllTests(unittest.TestCase):
     def test_users_can_login(self):
         self.register('Andrew', 'andrew@taskr.com', '1234', '1234')
         response = self.login('Andrew', '1234')
-        self.assertIn('Welcome!', response.data)
+        self.assertIn('Welcome to Taskr', response.data)
+
+    def test_invalid_form_data(self):
+        self.register('Andrew', 'andrew@taskr.com', '1234', '1234')
+        response = self.login('alert("alert box!");', 'foo')
+        self.assertIn(b'Invalid username or password.', response.data)
+
+    def test_user_registration_error(self):
+        self.app.get('/register/', follow_redirects=True)
+        self.register('Andrew', 'andrew@taskr.com', '1234', '1234')
+        self.app.get('/register/', follow_redirects=True)
+        response = self.register('Andrew', 'andrew@taskr.com', '1234', '1234')
+        print response.data
+        self.assertIn(b'That Username and/or email already exist.', response.data)
+
 
 if __name__ == "__main__":
     unittest.main()
