@@ -12,13 +12,13 @@ class AllTests(unittest.TestCase):
     def setUp(self):
         app.config['TESTING'] = True
         app.config['WTF_CSRF_ENABLED'] = False
-        app.config['SQLALCHEMY_DATEBASE_URI'] = 'sqlite:///' + os.path.join(basedir, TEST_DB)
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, TEST_DB)
         self.app = app.test_client()
         db.create_all()
 
-    def tearDown(self):
+    """def tearDown(self):
         db.session.remove()
-        db.drop_all()
+        db.drop_all()"""
 
     def login(self, name, password):
         return self.app.post('/', data=dict(
@@ -52,7 +52,8 @@ class AllTests(unittest.TestCase):
     def test_users_can_login(self):
         self.register('Andrew', 'andrew@taskr.com', '1234', '1234')
         response = self.login('Andrew', '1234')
-        self.assertIn('Welcome to Taskr', response.data)
+        #print response.data
+        self.assertIn(b'Welcome!', response.data)
 
     def test_invalid_form_data(self):
         self.register('Andrew', 'andrew@taskr.com', '1234', '1234')
@@ -60,9 +61,9 @@ class AllTests(unittest.TestCase):
         self.assertIn(b'Invalid username or password.', response.data)
 
     def test_user_registration_error(self):
-        self.app.get('/register/', follow_redirects=True)
+        #self.app.get('register/', follow_redirects=True)
         self.register('Andrew', 'andrew@taskr.com', '1234', '1234')
-        self.app.get('/register/', follow_redirects=True)
+        #self.app.get('register/', follow_redirects=True)
         response = self.register('Andrew', 'andrew@taskr.com', '1234', '1234')
         print response.data
         self.assertIn(b'That Username and/or email already exist.', response.data)
