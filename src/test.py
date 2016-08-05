@@ -16,9 +16,9 @@ class AllTests(unittest.TestCase):
         self.app = app.test_client()
         db.create_all()
 
-    """def tearDown(self):
+    def tearDown(self):
         db.session.remove()
-        db.drop_all()"""
+        db.drop_all()
 
     def login(self, name, password):
         return self.app.post('/', data=dict(
@@ -26,7 +26,7 @@ class AllTests(unittest.TestCase):
         ), follow_redirects=True)
 
     def register(self, name, email, password, confirm):
-        return self.app.post('register/', data=dict(
+        return self.app.post('/register', data=dict(
             name=name, email=email, password=password, confirm=confirm
         ), follow_redirects=True)
 
@@ -52,7 +52,6 @@ class AllTests(unittest.TestCase):
     def test_users_can_login(self):
         self.register('Andrew', 'andrew@taskr.com', '1234', '1234')
         response = self.login('Andrew', '1234')
-        #print response.data
         self.assertIn(b'Welcome!', response.data)
 
     def test_invalid_form_data(self):
@@ -61,11 +60,10 @@ class AllTests(unittest.TestCase):
         self.assertIn(b'Invalid username or password.', response.data)
 
     def test_user_registration_error(self):
-        #self.app.get('register/', follow_redirects=True)
+        self.app.get('register/', follow_redirects=True)
         self.register('Andrew', 'andrew@taskr.com', '1234', '1234')
-        #self.app.get('register/', follow_redirects=True)
+        self.app.get('register/', follow_redirects=True)
         response = self.register('Andrew', 'andrew@taskr.com', '1234', '1234')
-        print response.data
         self.assertIn(b'That Username and/or email already exist.', response.data)
 
 
