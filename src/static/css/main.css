@@ -1,6 +1,7 @@
 body {
     font-family: sans-serif;
-    background: #eee;
+    background: #ffffff;
+    padding: 60px 0;
 }
 
 a, h1, h2 {
@@ -67,7 +68,6 @@ h2 {
 .error {
     color: red;
     font-size: .8em;
-    background-color: #FFFFFF;
 }
 
 .datagrid table td, .datagrid table th {
@@ -114,4 +114,8 @@ h2 {
     margin: 0;
     text-decoration: none;
     position: relative;
+}
+
+.footer {
+    padding-top: 30px;
 }

@@ -77,6 +77,16 @@ class AllTests(unittest.TestCase):
         response = self.login('alert("alert box!");', 'foo')
         self.assertIn(b'Invalid username or password.', response.data)
 
+    def test_form_is_present_on_register_page(self):
+        response = self.app.get('register/')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Please register to access the task list.', response.data)
+
+    def test_user_registration(self):
+        self.app.get('register/', follow_redirects=True)
+        response = self.register('Andrew', 'andrew@taskr.com', '123456', '123456')
+        self.assertIn(b'Thanks for registering. Please login.', response.data)
+
     def test_user_registration_error(self):
         self.app.get('register/', follow_redirects=True)
         self.register('Andrew', 'andrew@taskr.com', '123456', '123456')
