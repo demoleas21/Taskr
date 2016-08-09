@@ -2,12 +2,12 @@ import os
 import unittest
 from views import app, db
 from _config import basedir
-from models import User
+from models import Task, User
 
 TEST_DB = 'test.db'
 
 
-class AllTests(unittest.TestCase):
+class TasksTests(unittest.TestCase):
 
     def setUp(self):
         app.config['TESTING'] = True
@@ -47,6 +47,17 @@ class AllTests(unittest.TestCase):
             posted_date='08/06/2016',
             status=1
         ), follow_redirects=True)
+
+    @staticmethod
+    def create_admin_user():
+        new_user = User(
+            name='Administrator',
+            email='admin@taskr.com',
+            password='123456',
+            role='admin'
+        )
+        db.session.add(new_user)
+        db.session.commit()
 
     def test_logged_in_users_can_access_tasks_page(self):
         self.register('Andrew', 'andrew@taskr.com', '123456', '123456')

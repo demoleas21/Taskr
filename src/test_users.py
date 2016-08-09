@@ -7,7 +7,7 @@ from models import User
 TEST_DB = 'test.db'
 
 
-class AllTests(unittest.TestCase):
+class UsersTests(unittest.TestCase):
 
     def setUp(self):
         app.config['TESTING'] = True
