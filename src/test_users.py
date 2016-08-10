@@ -34,12 +34,6 @@ class UsersTests(unittest.TestCase):
         return self.app.get('logout/', follow_redirects=True)
 
     @staticmethod
-    def create_user(name, email, password):
-        new_user = User(name=name, email=email, password=password)
-        db.session.add(new_user)
-        db.session.commit()
-
-    @staticmethod
     def test_users_can_register():
         new_user = User('andrew', 'andrew@taskr.com', '123456')
         db.session.add(new_user)
@@ -90,3 +84,6 @@ class UsersTests(unittest.TestCase):
     def test_not_logged_in_users_cannot_logout(self):
         response = self.logout()
         self.assertNotIn(b'Goodbye!', response.data)
+
+if __name__ == "__main__":
+    unittest.main()
