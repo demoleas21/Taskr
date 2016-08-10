@@ -1,4 +1,6 @@
 /env
 /.idea
+/htmlcov
 *.pyc
 *.db
+.coverage
