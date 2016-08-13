@@ -26,7 +26,7 @@ def logout():
     session.pop('user_id', None)
     session.pop('role', None)
     flash('Goodbye!')
-    return redirect(url_for('user.login'))
+    return redirect(url_for('users.login'))
 
 
 @users_blueprint.route('/', methods=['GET', 'POST'])
